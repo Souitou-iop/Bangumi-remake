@@ -21,6 +21,7 @@
 		E20100072B00100100000001 /* BangumiAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101072B00100100000001 /* BangumiAPIClient.swift */; };
 		E20100082B00100100000001 /* BangumiRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101082B00100100000001 /* BangumiRepositories.swift */; };
 		E20100092B00100100000001 /* BangumiNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101092B00100100000001 /* BangumiNotificationStore.swift */; };
+		E201000A2C00100100000001 /* BangumiOAuthWebDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201010A2C00100100000001 /* BangumiOAuthWebDataStore.swift */; };
 		E201000A2B00100100000001 /* BangumiSubjectModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201010A2B00100100000001 /* BangumiSubjectModels.swift */; };
 		E201000B2B00100100000001 /* BangumiSubjectParsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201010B2B00100100000001 /* BangumiSubjectParsers.swift */; };
 		E201000C2B00100100000001 /* BangumiTimelineModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201010C2B00100100000001 /* BangumiTimelineModels.swift */; };
@@ -48,6 +49,10 @@
 		A7400479642742EBA6626F1A /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "Bangumi/noop-file.swift"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = Bangumi/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		E20101122C00100100000001 /* Bangumi.Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Bangumi.Debug.xcconfig; sourceTree = "<group>"; };
+		E20101132C00100100000001 /* Bangumi.Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Bangumi.Release.xcconfig; sourceTree = "<group>"; };
+		E20101142C00100100000001 /* LocalSecrets.example.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LocalSecrets.example.xcconfig; sourceTree = "<group>"; };
+		E20101152C00100100000001 /* LocalSecrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LocalSecrets.xcconfig; sourceTree = "<group>"; };
 		D366939D4196A3C1F15EB51A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Bangumi/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		D4B150A63FA0F6BF89BF9A88 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Bangumi/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		E20101012B00100100000001 /* BangumiAppTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiAppTypes.swift; sourceTree = "<group>"; };
@@ -59,6 +64,7 @@
 		E20101072B00100100000001 /* BangumiAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiAPIClient.swift; sourceTree = "<group>"; };
 		E20101082B00100100000001 /* BangumiRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiRepositories.swift; sourceTree = "<group>"; };
 		E20101092B00100100000001 /* BangumiNotificationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiNotificationStore.swift; sourceTree = "<group>"; };
+		E201010A2C00100100000001 /* BangumiOAuthWebDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiOAuthWebDataStore.swift; sourceTree = "<group>"; };
 		E201010A2B00100100000001 /* BangumiSubjectModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiSubjectModels.swift; sourceTree = "<group>"; };
 		E201010B2B00100100000001 /* BangumiSubjectParsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiSubjectParsers.swift; sourceTree = "<group>"; };
 		E201010C2B00100100000001 /* BangumiTimelineModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiTimelineModels.swift; sourceTree = "<group>"; };
@@ -133,6 +139,7 @@
 					E20101072B00100100000001 /* BangumiAPIClient.swift */,
 					E20101082B00100100000001 /* BangumiRepositories.swift */,
 					E20101092B00100100000001 /* BangumiNotificationStore.swift */,
+					E201010A2C00100100000001 /* BangumiOAuthWebDataStore.swift */,
 				);
 				path = Bangumi/Infrastructure;
 				sourceTree = "<group>";
@@ -268,6 +275,10 @@
 			isa = PBXGroup;
 			children = (
 				BB2F792C24A3F905000567C9 /* Expo.plist */,
+				E20101122C00100100000001 /* Bangumi.Debug.xcconfig */,
+				E20101132C00100100000001 /* Bangumi.Release.xcconfig */,
+				E20101142C00100100000001 /* LocalSecrets.example.xcconfig */,
+				E20101152C00100100000001 /* LocalSecrets.xcconfig */,
 			);
 			name = Supporting;
 			path = Bangumi/Supporting;
@@ -466,6 +477,7 @@
 					E20100072B00100100000001 /* BangumiAPIClient.swift in Sources */,
 					E20100082B00100100000001 /* BangumiRepositories.swift in Sources */,
 					E20100092B00100100000001 /* BangumiNotificationStore.swift in Sources */,
+					E201000A2C00100100000001 /* BangumiOAuthWebDataStore.swift in Sources */,
 					E201000A2B00100100000001 /* BangumiSubjectModels.swift in Sources */,
 					E201000B2B00100100000001 /* BangumiSubjectParsers.swift in Sources */,
 					E201000C2B00100100000001 /* BangumiTimelineModels.swift in Sources */,
@@ -484,7 +496,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB15EF835DD8B0C17ACE8ADF /* Pods-Bangumi.debug.xcconfig */;
+			baseConfigurationReference = E20101122C00100100000001 /* Bangumi.Debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Bangumi/Bangumi.entitlements;
@@ -518,7 +530,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4489005C304AECA42D095CFC /* Pods-Bangumi.release.xcconfig */;
+			baseConfigurationReference = E20101132C00100100000001 /* Bangumi.Release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Bangumi/Bangumi.entitlements;

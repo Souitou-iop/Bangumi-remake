@@ -5380,10 +5380,14 @@ private final class MeViewModel: ObservableObject {
 private struct LoginScreen: View {
   @EnvironmentObject private var model: BangumiAppModel
   @Environment(\.dismiss) private var dismiss
+  private let oauthWebDataStore = BangumiOAuthWebDataStore()
   @State private var manualToken = ""
   @State private var isLoading = false
   @State private var isShowingOAuthWebLogin = false
+  @State private var isShowingOAuthWebDataDialog = false
+  @State private var isClearingOAuthWebData = false
   @State private var oauthAuthorization: BangumiOAuthAuthorizationSession?
+  @State private var oauthWebDataMessage: String?
   @State private var errorMessage: String?
 
   var body: some View {
@@ -5395,10 +5399,22 @@ private struct LoginScreen: View {
 
         Button(isLoading ? "登录中..." : "开始网页登录") {
           errorMessage = nil
+          oauthWebDataMessage = nil
           oauthAuthorization = model.apiClient.beginOAuthAuthorization()
           isShowingOAuthWebLogin = true
         }
         .disabled(isLoading)
+
+        Button(isClearingOAuthWebData ? "正在清理..." : "清除 Bangumi 登录数据", role: .destructive) {
+          isShowingOAuthWebDataDialog = true
+        }
+        .disabled(isLoading || isClearingOAuthWebData)
+
+        if let oauthWebDataMessage {
+          Text(oauthWebDataMessage)
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+        }
       }
 
       Section("手动 Token") {
@@ -5422,6 +5438,20 @@ private struct LoginScreen: View {
       }
     }
     .navigationTitle("登录")
+    .confirmationDialog(
+      "清除 Bangumi 登录数据？",
+      isPresented: $isShowingOAuthWebDataDialog,
+      titleVisibility: .visible
+    ) {
+      Button("清除", role: .destructive) {
+        Task {
+          await clearOAuthWebData()
+        }
+      }
+      Button("取消", role: .cancel) {}
+    } message: {
+      Text("这会移除 Bangumi 网页登录的 Cookie 与站点数据，下次网页登录将使用新的网页会话。")
+    }
     .navigationDestination(isPresented: $isShowingOAuthWebLogin) {
       if let oauthAuthorization {
         OAuthLoginScreen(
@@ -5478,13 +5508,40 @@ private struct LoginScreen: View {
       errorMessage = error.localizedDescription
     }
   }
+
+  @MainActor
+  private func clearOAuthWebData() async {
+    isClearingOAuthWebData = true
+    defer { isClearingOAuthWebData = false }
+
+    await oauthWebDataStore.clearBangumiOAuthWebsiteData()
+    oauthWebDataMessage = "已清除 Bangumi 网页登录数据，下次网页登录会使用新的网页会话。"
+  }
 }
 
 private struct OAuthLoginScreen: View {
-  let authorization: BangumiOAuthAuthorizationSession
   let apiClient: BangumiAPIClient
   let onCode: @MainActor (String) -> Void
   let onFailure: @MainActor (String) -> Void
+
+  private let oauthWebDataStore = BangumiOAuthWebDataStore()
+  @State private var authorization: BangumiOAuthAuthorizationSession
+  @State private var reloadToken = UUID()
+  @State private var isShowingOAuthWebDataDialog = false
+  @State private var isClearingOAuthWebData = false
+  @State private var oauthWebDataMessage: String?
+
+  init(
+    authorization: BangumiOAuthAuthorizationSession,
+    apiClient: BangumiAPIClient,
+    onCode: @escaping @MainActor (String) -> Void,
+    onFailure: @escaping @MainActor (String) -> Void
+  ) {
+    self.apiClient = apiClient
+    self.onCode = onCode
+    self.onFailure = onFailure
+    _authorization = State(initialValue: authorization)
+  }
 
   var body: some View {
     VStack(spacing: 0) {
@@ -5494,8 +5551,18 @@ private struct OAuthLoginScreen: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
 
+      if let oauthWebDataMessage {
+        Text(oauthWebDataMessage)
+          .font(.footnote)
+          .foregroundStyle(.secondary)
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .padding(.horizontal)
+          .padding(.bottom, 8)
+      }
+
       BangumiOAuthWebView(
         authorization: authorization,
+        reloadToken: reloadToken,
         apiClient: apiClient,
         onCode: onCode,
         onFailure: onFailure
@@ -5503,6 +5570,20 @@ private struct OAuthLoginScreen: View {
     }
     .navigationTitle("网页登录")
     .navigationBarTitleDisplayMode(.inline)
+    .confirmationDialog(
+      "清除 Bangumi 登录数据并重新加载？",
+      isPresented: $isShowingOAuthWebDataDialog,
+      titleVisibility: .visible
+    ) {
+      Button("清除并重新加载", role: .destructive) {
+        Task {
+          await clearOAuthWebDataAndReload()
+        }
+      }
+      Button("取消", role: .cancel) {}
+    } message: {
+      Text("这会移除 Bangumi 网页登录的 Cookie 与站点数据，并重新载入新的授权页面。")
+    }
     .toolbar {
       ToolbarItem(placement: .topBarLeading) {
         Button("取消") {
@@ -5510,7 +5591,33 @@ private struct OAuthLoginScreen: View {
           onFailure(BangumiError.oauthCancelled.localizedDescription)
         }
       }
+
+      ToolbarItem(placement: .topBarTrailing) {
+        Menu {
+          Button(
+            isClearingOAuthWebData ? "正在清理..." : "清除并重新加载",
+            role: .destructive
+          ) {
+            isShowingOAuthWebDataDialog = true
+          }
+          .disabled(isClearingOAuthWebData)
+        } label: {
+          Image(systemName: "ellipsis.circle")
+        }
+      }
     }
+  }
+
+  @MainActor
+  private func clearOAuthWebDataAndReload() async {
+    isClearingOAuthWebData = true
+    defer { isClearingOAuthWebData = false }
+
+    await oauthWebDataStore.clearBangumiOAuthWebsiteData()
+    apiClient.cancelOAuthAuthorization()
+    authorization = apiClient.beginOAuthAuthorization()
+    reloadToken = UUID()
+    oauthWebDataMessage = "已清除 Bangumi 网页登录数据，并重新载入授权页。"
   }
 }
 
@@ -5587,6 +5694,7 @@ private struct BangumiWebView: UIViewRepresentable {
 
 private struct BangumiOAuthWebView: UIViewRepresentable {
   let authorization: BangumiOAuthAuthorizationSession
+  let reloadToken: UUID
   let apiClient: BangumiAPIClient
   let onCode: @MainActor (String) -> Void
   let onFailure: @MainActor (String) -> Void
@@ -5608,18 +5716,30 @@ private struct BangumiOAuthWebView: UIViewRepresentable {
   }
 
   func updateUIView(_ webView: WKWebView, context: Context) {
-    if webView.url == nil {
+    context.coordinator.parent = self
+
+    if context.coordinator.prepareForReloadIfNeeded(reloadToken) || webView.url == nil {
       webView.load(URLRequest(url: authorization.authorizeURL))
     }
   }
 
   final class Coordinator: NSObject, WKNavigationDelegate {
-    private let parent: BangumiOAuthWebView
+    var parent: BangumiOAuthWebView
     private var hasHandledCallback = false
     private var hasRecoveredAuthorizeURL = false
+    private var reloadToken: UUID
 
     init(_ parent: BangumiOAuthWebView) {
       self.parent = parent
+      reloadToken = parent.reloadToken
+    }
+
+    func prepareForReloadIfNeeded(_ token: UUID) -> Bool {
+      guard token != reloadToken else { return false }
+      reloadToken = token
+      hasHandledCallback = false
+      hasRecoveredAuthorizeURL = false
+      return true
     }
 
     func webView(

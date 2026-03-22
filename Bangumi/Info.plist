@@ -7,7 +7,7 @@
 		<string>tv.bangumi.czy0729.subject-updates</string>
 	</array>
 	<key>BangumiOAuthClientSecret</key>
-	<string></string>
+	<string>$(BANGUMI_OAUTH_CLIENT_SECRET)</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

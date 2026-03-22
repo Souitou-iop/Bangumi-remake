@@ -1,0 +1,4 @@
+#include "../../Pods/Target Support Files/Pods-Bangumi/Pods-Bangumi.debug.xcconfig"
+
+BANGUMI_OAUTH_CLIENT_SECRET =
+#include? "LocalSecrets.xcconfig"
