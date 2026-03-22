@@ -12,6 +12,23 @@
 		3C725AADB3445CF461C373E0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D4B150A63FA0F6BF89BF9A88 /* PrivacyInfo.xcprivacy */; };
 		6637B0AA9AC12B0254D769E6 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D366939D4196A3C1F15EB51A /* ExpoModulesProvider.swift */; };
 		8374FBC5EBF448A0AC675522 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7400479642742EBA6626F1A /* noop-file.swift */; };
+		E20100012B00100100000001 /* BangumiAppTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101012B00100100000001 /* BangumiAppTypes.swift */; };
+		E20100022B00100100000001 /* BangumiAppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101022B00100100000001 /* BangumiAppModel.swift */; };
+		E20100032B00100100000001 /* BangumiDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101032B00100100000001 /* BangumiDesign.swift */; };
+		E20100042B00100100000001 /* BangumiHTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101042B00100100000001 /* BangumiHTMLParser.swift */; };
+		E20100052B00100100000001 /* BangumiModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101052B00100100000001 /* BangumiModels.swift */; };
+		E20100062B00100100000001 /* BangumiStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101062B00100100000001 /* BangumiStores.swift */; };
+		E20100072B00100100000001 /* BangumiAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101072B00100100000001 /* BangumiAPIClient.swift */; };
+		E20100082B00100100000001 /* BangumiRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101082B00100100000001 /* BangumiRepositories.swift */; };
+		E20100092B00100100000001 /* BangumiNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101092B00100100000001 /* BangumiNotificationStore.swift */; };
+		E201000A2B00100100000001 /* BangumiSubjectModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201010A2B00100100000001 /* BangumiSubjectModels.swift */; };
+		E201000B2B00100100000001 /* BangumiSubjectParsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201010B2B00100100000001 /* BangumiSubjectParsers.swift */; };
+		E201000C2B00100100000001 /* BangumiTimelineModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201010C2B00100100000001 /* BangumiTimelineModels.swift */; };
+		E201000D2B00100100000001 /* BangumiTimelineParsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201010D2B00100100000001 /* BangumiTimelineParsers.swift */; };
+		E201000E2B00100100000001 /* BangumiRakuenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201010E2B00100100000001 /* BangumiRakuenModels.swift */; };
+		E201000F2B00100100000001 /* BangumiRakuenParsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201010F2B00100100000001 /* BangumiRakuenParsers.swift */; };
+		E20100102B00100100000001 /* BangumiUserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101102B00100100000001 /* BangumiUserModels.swift */; };
+		E20100112B00100100000001 /* BangumiUserProfileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101112B00100100000001 /* BangumiUserProfileParser.swift */; };
 		B332F96381C79174E4B5AD99 /* libPods-Bangumi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DAEB4DB7FE0BE932B804EF /* libPods-Bangumi.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F10100012A00100100000001 /* MiSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F10100112A00100100000001 /* MiSans-Regular.ttf */; };
@@ -33,6 +50,23 @@
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		D366939D4196A3C1F15EB51A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Bangumi/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		D4B150A63FA0F6BF89BF9A88 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Bangumi/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		E20101012B00100100000001 /* BangumiAppTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiAppTypes.swift; sourceTree = "<group>"; };
+		E20101022B00100100000001 /* BangumiAppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiAppModel.swift; sourceTree = "<group>"; };
+		E20101032B00100100000001 /* BangumiDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiDesign.swift; sourceTree = "<group>"; };
+		E20101042B00100100000001 /* BangumiHTMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiHTMLParser.swift; sourceTree = "<group>"; };
+		E20101052B00100100000001 /* BangumiModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiModels.swift; sourceTree = "<group>"; };
+		E20101062B00100100000001 /* BangumiStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiStores.swift; sourceTree = "<group>"; };
+		E20101072B00100100000001 /* BangumiAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiAPIClient.swift; sourceTree = "<group>"; };
+		E20101082B00100100000001 /* BangumiRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiRepositories.swift; sourceTree = "<group>"; };
+		E20101092B00100100000001 /* BangumiNotificationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiNotificationStore.swift; sourceTree = "<group>"; };
+		E201010A2B00100100000001 /* BangumiSubjectModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiSubjectModels.swift; sourceTree = "<group>"; };
+		E201010B2B00100100000001 /* BangumiSubjectParsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiSubjectParsers.swift; sourceTree = "<group>"; };
+		E201010C2B00100100000001 /* BangumiTimelineModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiTimelineModels.swift; sourceTree = "<group>"; };
+		E201010D2B00100100000001 /* BangumiTimelineParsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiTimelineParsers.swift; sourceTree = "<group>"; };
+		E201010E2B00100100000001 /* BangumiRakuenModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiRakuenModels.swift; sourceTree = "<group>"; };
+		E201010F2B00100100000001 /* BangumiRakuenParsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiRakuenParsers.swift; sourceTree = "<group>"; };
+		E20101102B00100100000001 /* BangumiUserModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiUserModels.swift; sourceTree = "<group>"; };
+		E20101112B00100100000001 /* BangumiUserProfileParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiUserProfileParser.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F10100112A00100100000001 /* MiSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MiSans-Regular.ttf"; sourceTree = "<group>"; };
 		F10100122A00100100000001 /* MiSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MiSans-Medium.ttf"; sourceTree = "<group>"; };
@@ -52,26 +86,123 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13B07FAE1A68108700A75B9A /* Bangumi */ = {
-			isa = PBXGroup;
-			children = (
-				BB2F792B24A3F905000567C9 /* Supporting */,
-				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
-				F10100202A00100100000001 /* Fonts */,
-				13B07FB51A68108700A75B9A /* Images.xcassets */,
+			13B07FAE1A68108700A75B9A /* Bangumi */ = {
+				isa = PBXGroup;
+				children = (
+					E20110012B00100100000001 /* App */,
+					E20110022B00100100000001 /* Shared */,
+					E20110032B00100100000001 /* Infrastructure */,
+					E20110042B00100100000001 /* Features */,
+					BB2F792B24A3F905000567C9 /* Supporting */,
+					13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+					13B07FB01A68108700A75B9A /* AppDelegate.mm */,
+					F10100202A00100100000001 /* Fonts */,
+					13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
 				A7400479642742EBA6626F1A /* noop-file.swift */,
 				D4B150A63FA0F6BF89BF9A88 /* PrivacyInfo.xcprivacy */,
 			);
-			name = Bangumi;
-			sourceTree = "<group>";
-		};
-		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
+				name = Bangumi;
+				sourceTree = "<group>";
+			};
+			E20110012B00100100000001 /* App */ = {
+				isa = PBXGroup;
+				children = (
+					E20101012B00100100000001 /* BangumiAppTypes.swift */,
+					E20101022B00100100000001 /* BangumiAppModel.swift */,
+				);
+				path = Bangumi/App;
+				sourceTree = "<group>";
+			};
+			E20110022B00100100000001 /* Shared */ = {
+				isa = PBXGroup;
+				children = (
+					E20110052B00100100000001 /* Design */,
+					E20110062B00100100000001 /* HTML */,
+				);
+				path = Bangumi/Shared;
+				sourceTree = "<group>";
+			};
+			E20110032B00100100000001 /* Infrastructure */ = {
+				isa = PBXGroup;
+				children = (
+					E20101052B00100100000001 /* BangumiModels.swift */,
+					E20101062B00100100000001 /* BangumiStores.swift */,
+					E20101072B00100100000001 /* BangumiAPIClient.swift */,
+					E20101082B00100100000001 /* BangumiRepositories.swift */,
+					E20101092B00100100000001 /* BangumiNotificationStore.swift */,
+				);
+				path = Bangumi/Infrastructure;
+				sourceTree = "<group>";
+			};
+			E20110042B00100100000001 /* Features */ = {
+				isa = PBXGroup;
+				children = (
+					E20110072B00100100000001 /* Subject */,
+					E20110082B00100100000001 /* Timeline */,
+					E20110092B00100100000001 /* Rakuen */,
+					E201100A2B00100100000001 /* User */,
+				);
+				path = Bangumi/Features;
+				sourceTree = "<group>";
+			};
+			E20110052B00100100000001 /* Design */ = {
+				isa = PBXGroup;
+				children = (
+					E20101032B00100100000001 /* BangumiDesign.swift */,
+				);
+				path = Design;
+				sourceTree = "<group>";
+			};
+			E20110062B00100100000001 /* HTML */ = {
+				isa = PBXGroup;
+				children = (
+					E20101042B00100100000001 /* BangumiHTMLParser.swift */,
+				);
+				path = HTML;
+				sourceTree = "<group>";
+			};
+			E20110072B00100100000001 /* Subject */ = {
+				isa = PBXGroup;
+				children = (
+					E201010A2B00100100000001 /* BangumiSubjectModels.swift */,
+					E201010B2B00100100000001 /* BangumiSubjectParsers.swift */,
+				);
+				path = Subject;
+				sourceTree = "<group>";
+			};
+			E20110082B00100100000001 /* Timeline */ = {
+				isa = PBXGroup;
+				children = (
+					E201010C2B00100100000001 /* BangumiTimelineModels.swift */,
+					E201010D2B00100100000001 /* BangumiTimelineParsers.swift */,
+				);
+				path = Timeline;
+				sourceTree = "<group>";
+			};
+			E20110092B00100100000001 /* Rakuen */ = {
+				isa = PBXGroup;
+				children = (
+					E201010E2B00100100000001 /* BangumiRakuenModels.swift */,
+					E201010F2B00100100000001 /* BangumiRakuenParsers.swift */,
+				);
+				path = Rakuen;
+				sourceTree = "<group>";
+			};
+			E201100A2B00100100000001 /* User */ = {
+				isa = PBXGroup;
+				children = (
+					E20101102B00100100000001 /* BangumiUserModels.swift */,
+					E20101112B00100100000001 /* BangumiUserProfileParser.swift */,
+				);
+				path = User;
+				sourceTree = "<group>";
+			};
+			2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
+				isa = PBXGroup;
+				children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				74DAEB4DB7FE0BE932B804EF /* libPods-Bangumi.a */,
 			);
@@ -323,12 +454,29 @@
 		13B07F871A680F5B00A75B9A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
-			files = (
-				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				8374FBC5EBF448A0AC675522 /* noop-file.swift in Sources */,
-				6637B0AA9AC12B0254D769E6 /* ExpoModulesProvider.swift in Sources */,
-			);
+				files = (
+					13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+					13B07FC11A68108700A75B9A /* main.m in Sources */,
+					E20100012B00100100000001 /* BangumiAppTypes.swift in Sources */,
+					E20100022B00100100000001 /* BangumiAppModel.swift in Sources */,
+					E20100032B00100100000001 /* BangumiDesign.swift in Sources */,
+					E20100042B00100100000001 /* BangumiHTMLParser.swift in Sources */,
+					E20100052B00100100000001 /* BangumiModels.swift in Sources */,
+					E20100062B00100100000001 /* BangumiStores.swift in Sources */,
+					E20100072B00100100000001 /* BangumiAPIClient.swift in Sources */,
+					E20100082B00100100000001 /* BangumiRepositories.swift in Sources */,
+					E20100092B00100100000001 /* BangumiNotificationStore.swift in Sources */,
+					E201000A2B00100100000001 /* BangumiSubjectModels.swift in Sources */,
+					E201000B2B00100100000001 /* BangumiSubjectParsers.swift in Sources */,
+					E201000C2B00100100000001 /* BangumiTimelineModels.swift in Sources */,
+					E201000D2B00100100000001 /* BangumiTimelineParsers.swift in Sources */,
+					E201000E2B00100100000001 /* BangumiRakuenModels.swift in Sources */,
+					E201000F2B00100100000001 /* BangumiRakuenParsers.swift in Sources */,
+					E20100102B00100100000001 /* BangumiUserModels.swift in Sources */,
+					E20100112B00100100000001 /* BangumiUserProfileParser.swift in Sources */,
+					8374FBC5EBF448A0AC675522 /* noop-file.swift in Sources */,
+					6637B0AA9AC12B0254D769E6 /* ExpoModulesProvider.swift in Sources */,
+				);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
