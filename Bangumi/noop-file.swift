@@ -2690,14 +2690,14 @@ private struct SubjectHeroCard: View {
         )
 
       VStack(alignment: .leading, spacing: 18) {
-        HStack(alignment: .top, spacing: 16) {
+        HStack(alignment: .top, spacing: 18) {
           Button {
             if let url = subject.images?.best {
               model.presentImage(url)
             }
           } label: {
             CoverImage(url: subject.images?.best)
-              .frame(width: 116, height: 154)
+              .frame(width: 138, height: 196)
               .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
               .overlay(alignment: .bottomTrailing) {
                 if subject.nsfw == true {
