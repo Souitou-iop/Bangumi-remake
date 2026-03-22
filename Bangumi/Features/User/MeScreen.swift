@@ -28,7 +28,7 @@ struct MeScreen: View {
     }
     .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
     .navigationBarTitleDisplayMode(.inline)
-    .toolbarBackground(.hidden, for: .navigationBar)
+    .toolbarBackground(.visible, for: .navigationBar)
     .confirmationDialog(
       "退出当前账号？",
       isPresented: $isShowingLogoutConfirmation,
@@ -124,6 +124,7 @@ struct MeScreen: View {
       }
     }
     .coordinateSpace(name: "me-scroll")
+    .contentMargins(.top, 0, for: .scrollContent)
     .onPreferenceChange(MeScrollOffsetPreferenceKey.self) { headerOffset = $0 }
     .safeAreaInset(edge: .top, spacing: 0) {
       if shouldShowCompactHeader {

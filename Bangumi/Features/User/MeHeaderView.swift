@@ -86,6 +86,6 @@ struct MeHeaderView: View {
     .frame(height: 360)
     .clipShape(RoundedRectangle(cornerRadius: 34, style: .continuous))
     .padding(.horizontal, 12)
-    .padding(.top, 8)
+    .padding(.top, 0)
   }
 }
