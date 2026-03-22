@@ -35,3 +35,4 @@ node_modules/
 # Local tooling
 .agents/
 .trae/
+.vscode/
