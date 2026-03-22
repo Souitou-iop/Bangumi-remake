@@ -832,7 +832,7 @@ private struct HomeHeader: View {
 
           Text(isAuthenticated ? "把在看、在读、在玩的进度重新排回首页。" : "游客模式下先看看每日放送和推荐条目。")
             .font(.subheadline)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(Color.white.opacity(0.74))
         }
 
         Spacer(minLength: 12)
@@ -860,7 +860,6 @@ private struct HomeHeader: View {
       if let currentUser, isAuthenticated {
         HStack(spacing: 10) {
           SubjectCapsuleLabel(title: currentUser.displayName, systemImage: "person.fill")
-          SubjectCapsuleLabel(title: "进度首页", systemImage: "rectangle.grid.2x2")
         }
       }
     }
@@ -897,7 +896,7 @@ private struct HomeCategoryBar: View {
           } label: {
             Text(category.title)
               .font(.subheadline.weight(.semibold))
-              .foregroundStyle(selection == category ? Color.white : Color.primary)
+              .foregroundStyle(selection == category ? Color.white : Color.black.opacity(0.82))
               .padding(.horizontal, 16)
               .padding(.vertical, 10)
               .background(
@@ -907,7 +906,7 @@ private struct HomeCategoryBar: View {
                       .fill(Color.accentColor)
                   } else {
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                      .fill(Color.white.opacity(0.65))
+                      .fill(Color.white.opacity(0.84))
                   }
                 }
               )
@@ -1209,10 +1208,10 @@ private struct HomeSectionHeader: View {
 
       Text("\(count) 项")
         .font(.caption.weight(.semibold))
-        .foregroundStyle(.secondary)
+        .foregroundStyle(Color.black.opacity(0.82))
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
-        .background(Color.white.opacity(0.65), in: Capsule())
+        .background(Color.white.opacity(0.84), in: Capsule())
     }
   }
 }
@@ -4168,10 +4167,10 @@ private struct SubjectCapsuleLabel: View {
   var body: some View {
     Label(title, systemImage: systemImage)
       .font(.caption.weight(.semibold))
-      .foregroundStyle(.secondary)
+      .foregroundStyle(Color.black.opacity(0.82))
       .padding(.horizontal, 10)
       .padding(.vertical, 6)
-      .background(Color.white.opacity(0.68), in: Capsule())
+      .background(Color.white.opacity(0.86), in: Capsule())
   }
 }
 
@@ -5238,145 +5237,6 @@ private struct NotificationManagementScreen: View {
   }
 }
 
-private struct MeScreen: View {
-  @EnvironmentObject private var model: BangumiAppModel
-  @EnvironmentObject private var sessionStore: BangumiSessionStore
-  @EnvironmentObject private var settingsStore: BangumiSettingsStore
-  @EnvironmentObject private var notificationStore: BangumiNotificationStore
-  @StateObject private var viewModel = MeViewModel()
-
-  var body: some View {
-    ScreenScaffold(
-      title: "我的",
-      subtitle: "会话、收藏概览、主题与缓存管理。",
-      navigationBarStyle: .discoveryNative
-    ) {
-      List {
-        Section("账号") {
-          if let user = sessionStore.currentUser {
-            NavigationLink {
-              UserProfileScreen(userID: user.username)
-            } label: {
-              HStack(spacing: 12) {
-                CoverImage(url: user.avatar?.best)
-                  .frame(width: 56, height: 56)
-                  .clipShape(Circle())
-
-                VStack(alignment: .leading, spacing: 4) {
-                  Text(user.displayName)
-                    .font(.headline)
-                  Text("@\(user.username)")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                }
-              }
-            }
-
-            Button("刷新资料") {
-              Task {
-                await viewModel.refresh(using: model.userRepository)
-              }
-            }
-
-            Button("退出登录", role: .destructive) {
-              sessionStore.signOut()
-              viewModel.collections = []
-            }
-          } else {
-            Button("登录 Bangumi") {
-              model.isShowingLogin = true
-            }
-          }
-
-          if let error = viewModel.errorMessage {
-            Text(error)
-              .foregroundStyle(.red)
-          }
-        }
-
-        Section("设置") {
-          NavigationLink {
-            NotificationManagementScreen()
-          } label: {
-            Label("通知管理", systemImage: "bell.badge")
-          }
-
-          Picker("主题", selection: $settingsStore.preferredTheme) {
-            ForEach(PreferredTheme.allCases) { theme in
-              Text(theme.title).tag(theme)
-            }
-          }
-
-          Button("清理缓存") {
-            model.apiClient.clearCaches()
-          }
-        }
-
-        if !viewModel.collections.isEmpty {
-          Section("在看动画") {
-            ForEach(viewModel.collections) { item in
-              NavigationLink {
-                SubjectDetailScreen(subjectID: item.subjectID)
-              } label: {
-                VStack(alignment: .leading, spacing: 4) {
-                  Text(item.subject.nameCN ?? item.subject.name)
-                  if let epStatus = item.epStatus {
-                    Text("已追到第 \(epStatus) 集")
-                      .font(.caption)
-                      .foregroundStyle(.secondary)
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        Section("关于") {
-          Text("当前原生版本已经接管 SwiftUI 根视图、认证骨架、时间线、发现、Rakuen、搜索、条目详情、账号与设置。")
-            .font(.footnote)
-          Text("下一步优先补富文本渲染、发帖交互和更稳的离线缓存。")
-            .font(.footnote)
-            .foregroundStyle(.secondary)
-          Text("条目详情页排版使用了 MiSans 字体。")
-            .font(.footnote)
-            .foregroundStyle(.secondary)
-        }
-      }
-      .bangumiRootScrollableLayout()
-      .task {
-        await viewModel.bootstrap(using: model.userRepository, sessionStore: sessionStore)
-      }
-    }
-  }
-}
-
-private final class MeViewModel: ObservableObject {
-  @Published var collections: [BangumiCollectionItem] = []
-  @Published var errorMessage: String?
-
-  @MainActor
-  func bootstrap(using repository: UserRepository, sessionStore: BangumiSessionStore) async {
-    guard sessionStore.isAuthenticated else {
-      collections = []
-      errorMessage = nil
-      return
-    }
-
-    await refresh(using: repository)
-  }
-
-  @MainActor
-  func refresh(using repository: UserRepository) async {
-    do {
-      _ = try await repository.refreshCurrentUser()
-      collections = try await repository.fetchWatchingCollections()
-      errorMessage = nil
-    } catch {
-      errorMessage = error.localizedDescription
-    }
-  }
-}
-
 private struct LoginScreen: View {
   @EnvironmentObject private var model: BangumiAppModel
   @Environment(\.dismiss) private var dismiss
@@ -5871,11 +5731,7 @@ private struct CoverImage: View {
   let url: URL?
 
   var body: some View {
-    AsyncImage(url: url) { image in
-      image
-        .resizable()
-        .scaledToFill()
-    } placeholder: {
+    BangumiRemoteImage(url: url) {
       ZStack {
         RoundedRectangle(cornerRadius: 12)
           .fill(Color.secondary.opacity(0.15))
@@ -5883,5 +5739,6 @@ private struct CoverImage: View {
           .foregroundStyle(.secondary)
       }
     }
+    .scaledToFill()
   }
 }

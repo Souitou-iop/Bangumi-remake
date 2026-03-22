@@ -15,6 +15,7 @@
 		E20100012B00100100000001 /* BangumiAppTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101012B00100100000001 /* BangumiAppTypes.swift */; };
 		E20100022B00100100000001 /* BangumiAppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101022B00100100000001 /* BangumiAppModel.swift */; };
 		E20100032B00100100000001 /* BangumiDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101032B00100100000001 /* BangumiDesign.swift */; };
+		E20100033C22100100000001 /* BangumiRemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101033C22100100000001 /* BangumiRemoteImage.swift */; };
 		E20100042B00100100000001 /* BangumiHTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101042B00100100000001 /* BangumiHTMLParser.swift */; };
 		E20100052B00100100000001 /* BangumiModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101052B00100100000001 /* BangumiModels.swift */; };
 		E20100062B00100100000001 /* BangumiStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101062B00100100000001 /* BangumiStores.swift */; };
@@ -30,6 +31,13 @@
 		E201000F2B00100100000001 /* BangumiRakuenParsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E201010F2B00100100000001 /* BangumiRakuenParsers.swift */; };
 		E20100102B00100100000001 /* BangumiUserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101102B00100100000001 /* BangumiUserModels.swift */; };
 		E20100112B00100100000001 /* BangumiUserProfileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101112B00100100000001 /* BangumiUserProfileParser.swift */; };
+		E20100122C22100100000001 /* MeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101122C22100100000001 /* MeModels.swift */; };
+		E20100132C22100100000001 /* MeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101132C22100100000001 /* MeViewModel.swift */; };
+		E20100142C22100100000001 /* MeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101142C22100100000002 /* MeHeaderView.swift */; };
+		E20100152C22100100000001 /* MeStatusTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101152C22100100000002 /* MeStatusTabs.swift */; };
+		E20100162C22100100000001 /* MeToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101162C22100100000001 /* MeToolbar.swift */; };
+		E20100172C22100100000001 /* MeCollectionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101172C22100100000001 /* MeCollectionList.swift */; };
+		E20100182C22100100000001 /* MeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20101182C22100100000001 /* MeScreen.swift */; };
 		B332F96381C79174E4B5AD99 /* libPods-Bangumi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DAEB4DB7FE0BE932B804EF /* libPods-Bangumi.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F10100012A00100100000001 /* MiSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F10100112A00100100000001 /* MiSans-Regular.ttf */; };
@@ -58,6 +66,7 @@
 		E20101012B00100100000001 /* BangumiAppTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiAppTypes.swift; sourceTree = "<group>"; };
 		E20101022B00100100000001 /* BangumiAppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiAppModel.swift; sourceTree = "<group>"; };
 		E20101032B00100100000001 /* BangumiDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiDesign.swift; sourceTree = "<group>"; };
+		E20101033C22100100000001 /* BangumiRemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiRemoteImage.swift; sourceTree = "<group>"; };
 		E20101042B00100100000001 /* BangumiHTMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiHTMLParser.swift; sourceTree = "<group>"; };
 		E20101052B00100100000001 /* BangumiModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiModels.swift; sourceTree = "<group>"; };
 		E20101062B00100100000001 /* BangumiStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiStores.swift; sourceTree = "<group>"; };
@@ -73,6 +82,13 @@
 		E201010F2B00100100000001 /* BangumiRakuenParsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiRakuenParsers.swift; sourceTree = "<group>"; };
 		E20101102B00100100000001 /* BangumiUserModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiUserModels.swift; sourceTree = "<group>"; };
 		E20101112B00100100000001 /* BangumiUserProfileParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BangumiUserProfileParser.swift; sourceTree = "<group>"; };
+		E20101122C22100100000001 /* MeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeModels.swift; sourceTree = "<group>"; };
+		E20101132C22100100000001 /* MeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewModel.swift; sourceTree = "<group>"; };
+		E20101142C22100100000002 /* MeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeHeaderView.swift; sourceTree = "<group>"; };
+		E20101152C22100100000002 /* MeStatusTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeStatusTabs.swift; sourceTree = "<group>"; };
+		E20101162C22100100000001 /* MeToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeToolbar.swift; sourceTree = "<group>"; };
+		E20101172C22100100000001 /* MeCollectionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeCollectionList.swift; sourceTree = "<group>"; };
+		E20101182C22100100000001 /* MeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeScreen.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F10100112A00100100000001 /* MiSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MiSans-Regular.ttf"; sourceTree = "<group>"; };
 		F10100122A00100100000001 /* MiSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MiSans-Medium.ttf"; sourceTree = "<group>"; };
@@ -126,9 +142,18 @@
 				isa = PBXGroup;
 				children = (
 					E20110052B00100100000001 /* Design */,
+					E20110043C22100100000001 /* UI */,
 					E20110062B00100100000001 /* HTML */,
 				);
 				path = Bangumi/Shared;
+				sourceTree = "<group>";
+			};
+			E20110043C22100100000001 /* UI */ = {
+				isa = PBXGroup;
+				children = (
+					E20101033C22100100000001 /* BangumiRemoteImage.swift */,
+				);
+				path = UI;
 				sourceTree = "<group>";
 			};
 			E20110032B00100100000001 /* Infrastructure */ = {
@@ -203,6 +228,13 @@
 				children = (
 					E20101102B00100100000001 /* BangumiUserModels.swift */,
 					E20101112B00100100000001 /* BangumiUserProfileParser.swift */,
+					E20101122C22100100000001 /* MeModels.swift */,
+					E20101132C22100100000001 /* MeViewModel.swift */,
+					E20101142C22100100000002 /* MeHeaderView.swift */,
+					E20101152C22100100000002 /* MeStatusTabs.swift */,
+					E20101162C22100100000001 /* MeToolbar.swift */,
+					E20101172C22100100000001 /* MeCollectionList.swift */,
+					E20101182C22100100000001 /* MeScreen.swift */,
 				);
 				path = User;
 				sourceTree = "<group>";
@@ -471,6 +503,7 @@
 					E20100012B00100100000001 /* BangumiAppTypes.swift in Sources */,
 					E20100022B00100100000001 /* BangumiAppModel.swift in Sources */,
 					E20100032B00100100000001 /* BangumiDesign.swift in Sources */,
+					E20100033C22100100000001 /* BangumiRemoteImage.swift in Sources */,
 					E20100042B00100100000001 /* BangumiHTMLParser.swift in Sources */,
 					E20100052B00100100000001 /* BangumiModels.swift in Sources */,
 					E20100062B00100100000001 /* BangumiStores.swift in Sources */,
@@ -486,6 +519,13 @@
 					E201000F2B00100100000001 /* BangumiRakuenParsers.swift in Sources */,
 					E20100102B00100100000001 /* BangumiUserModels.swift in Sources */,
 					E20100112B00100100000001 /* BangumiUserProfileParser.swift in Sources */,
+					E20100122C22100100000001 /* MeModels.swift in Sources */,
+					E20100132C22100100000001 /* MeViewModel.swift in Sources */,
+					E20100142C22100100000001 /* MeHeaderView.swift in Sources */,
+					E20100152C22100100000001 /* MeStatusTabs.swift in Sources */,
+					E20100162C22100100000001 /* MeToolbar.swift in Sources */,
+					E20100172C22100100000001 /* MeCollectionList.swift in Sources */,
+					E20100182C22100100000001 /* MeScreen.swift in Sources */,
 					8374FBC5EBF448A0AC675522 /* noop-file.swift in Sources */,
 					6637B0AA9AC12B0254D769E6 /* ExpoModulesProvider.swift in Sources */,
 				);

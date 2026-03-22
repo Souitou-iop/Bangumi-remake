@@ -352,6 +352,11 @@ struct BangumiCollectionsResponse: Codable {
   let data: [BangumiCollectionItem]
 }
 
+struct BangumiCollectionPage {
+  let total: Int
+  let items: [BangumiCollectionItem]
+}
+
 struct SearchResponse: Codable {
   let list: [BangumiSubjectSummary]
 

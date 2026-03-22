@@ -234,22 +234,42 @@ final class BangumiAPIClient {
     )
   }
 
+  func fetchCollections(
+    userID: String,
+    subjectType: SubjectType,
+    status: CollectionStatus,
+    limit: Int = 20,
+    offset: Int = 0
+  ) async throws -> BangumiCollectionPage {
+    let response: BangumiCollectionsResponse = try await get(
+      url: config.apiV0Base.appending(path: "/users/\(userID)/collections"),
+      query: [
+        URLQueryItem(name: "subject_type", value: subjectType.rawValue.description),
+        URLQueryItem(name: "type", value: status.v0Type),
+        URLQueryItem(name: "limit", value: String(limit)),
+        URLQueryItem(name: "offset", value: String(offset))
+      ],
+      requiresAuth: true
+    )
+
+    return BangumiCollectionPage(
+      total: response.total ?? response.data.count,
+      items: response.data
+    )
+  }
+
   func fetchWatchingCollections(
     userID: String,
     subjectType: SubjectType,
     limit: Int = 20
   ) async throws -> [BangumiCollectionItem] {
-    let response: BangumiCollectionsResponse = try await get(
-      url: config.apiV0Base.appending(path: "/users/\(userID)/collections"),
-      query: [
-        URLQueryItem(name: "subject_type", value: subjectType.rawValue.description),
-        URLQueryItem(name: "type", value: CollectionStatus.doing.v0Type),
-        URLQueryItem(name: "limit", value: String(limit)),
-        URLQueryItem(name: "offset", value: "0")
-      ],
-      requiresAuth: true
-    )
-    return response.data
+    try await fetchCollections(
+      userID: userID,
+      subjectType: subjectType,
+      status: .doing,
+      limit: limit,
+      offset: 0
+    ).items
   }
 
   func fetchUserProfile(userID: String) async throws -> BangumiUserProfile {

@@ -177,6 +177,26 @@ final class UserRepository {
     return try await apiClient.fetchWatchingCollections(userID: identifier, subjectType: subjectType, limit: limit)
   }
 
+  func fetchCollections(
+    status: CollectionStatus,
+    subjectType: SubjectType = .anime,
+    limit: Int = 20,
+    offset: Int = 0
+  ) async throws -> BangumiCollectionPage {
+    guard let currentUser = sessionStore.currentUser else {
+      throw BangumiError.missingCurrentUser
+    }
+
+    let identifier = currentUser.username.isEmpty ? String(currentUser.id) : currentUser.username
+    return try await apiClient.fetchCollections(
+      userID: identifier,
+      subjectType: subjectType,
+      status: status,
+      limit: limit,
+      offset: offset
+    )
+  }
+
   func fetchUserProfile(userID: String) async throws -> BangumiUserProfile {
     try await apiClient.fetchUserProfile(userID: userID)
   }
@@ -187,5 +207,21 @@ final class UserRepository {
     limit: Int = 20
   ) async throws -> [BangumiCollectionItem] {
     try await apiClient.fetchWatchingCollections(userID: userID, subjectType: subjectType, limit: limit)
+  }
+
+  func fetchCollections(
+    userID: String,
+    status: CollectionStatus,
+    subjectType: SubjectType = .anime,
+    limit: Int = 20,
+    offset: Int = 0
+  ) async throws -> BangumiCollectionPage {
+    try await apiClient.fetchCollections(
+      userID: userID,
+      subjectType: subjectType,
+      status: status,
+      limit: limit,
+      offset: offset
+    )
   }
 }
