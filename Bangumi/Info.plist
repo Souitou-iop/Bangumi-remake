@@ -6,6 +6,8 @@
 	<array>
 		<string>tv.bangumi.czy0729.subject-updates</string>
 	</array>
+	<key>BangumiOAuthClientSecret</key>
+	<string></string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

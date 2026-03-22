@@ -169,7 +169,11 @@ final class UserRepository {
   }
 
   func fetchWatchingCollections(subjectType: SubjectType = .anime, limit: Int = 20) async throws -> [BangumiCollectionItem] {
-    let identifier = sessionStore.currentUser?.username ?? String(sessionStore.currentUser?.id ?? 0)
+    guard let currentUser = sessionStore.currentUser else {
+      throw BangumiError.missingCurrentUser
+    }
+
+    let identifier = currentUser.username.isEmpty ? String(currentUser.id) : currentUser.username
     return try await apiClient.fetchWatchingCollections(userID: identifier, subjectType: subjectType, limit: limit)
   }
 
