@@ -395,17 +395,21 @@ struct EmptyResponse: Codable {}
 enum BangumiError: LocalizedError {
   case invalidURL
   case missingToken
+  case missingCurrentUser
   case invalidResponse
   case oauthCancelled
   case oauthMissingCode
+  case oauthClientSecretMissing
 
   var errorDescription: String? {
     switch self {
     case .invalidURL: "URL 无效"
     case .missingToken: "当前未登录"
+    case .missingCurrentUser: "当前用户信息缺失，请重新登录"
     case .invalidResponse: "服务返回异常"
     case .oauthCancelled: "登录已取消"
     case .oauthMissingCode: "未能从回调中解析授权码"
+    case .oauthClientSecretMissing: "未配置 OAuth Client Secret，请改用 Token 登录或在应用配置中注入密钥"
     }
   }
 }

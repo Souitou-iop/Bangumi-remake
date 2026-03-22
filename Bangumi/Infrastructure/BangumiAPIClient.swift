@@ -7,8 +7,23 @@ final class BangumiAPIClient {
     let webBase = URL(string: "https://bgm.tv")!
     let nextBase = URL(string: "https://next.bgm.tv/p1")!
     let appID = "bgm8885c4d524cd61fc"
-    let appSecret = "1da52e7834bbb73cca90302f9ddbc8dd"
     let callbackURL = URL(string: "https://bgm.tv/dev/app")!
+
+    var appSecret: String? {
+      let environmentSecret = ProcessInfo.processInfo.environment["BANGUMI_OAUTH_CLIENT_SECRET"]?
+        .trimmingCharacters(in: .whitespacesAndNewlines)
+      if let environmentSecret, !environmentSecret.isEmpty {
+        return environmentSecret
+      }
+
+      let plistSecret = Bundle.main.object(forInfoDictionaryKey: "BangumiOAuthClientSecret") as? String
+      let trimmedSecret = plistSecret?.trimmingCharacters(in: .whitespacesAndNewlines)
+      if let trimmedSecret, !trimmedSecret.isEmpty {
+        return trimmedSecret
+      }
+
+      return nil
+    }
   }
 
   let config = Config()
@@ -31,19 +46,24 @@ final class BangumiAPIClient {
     components.queryItems = [
       URLQueryItem(name: "response_type", value: "code"),
       URLQueryItem(name: "client_id", value: config.appID),
-      URLQueryItem(name: "redirect_uri", value: config.callbackURL.absoluteString)
+      URLQueryItem(name: "redirect_uri", value: config.callbackURL.absoluteString),
+      URLQueryItem(name: "state", value: oauthState())
     ]
     return components.url!
   }
 
   func exchangeCodeForToken(code: String) async throws -> BangumiToken {
+    guard let appSecret = config.appSecret else {
+      throw BangumiError.oauthClientSecretMissing
+    }
+
     var request = URLRequest(url: config.webBase.appending(path: "/oauth/access_token"))
     request.httpMethod = "POST"
     request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
     request.httpBody = formData([
       "grant_type": "authorization_code",
       "client_id": config.appID,
-      "client_secret": config.appSecret,
+      "client_secret": appSecret,
       "code": code,
       "redirect_uri": config.callbackURL.absoluteString
     ])
@@ -111,8 +131,8 @@ final class BangumiAPIClient {
     do {
       return try await fetchEpisodesFromV0(subjectID: subjectID)
     } catch {
-      let html = try? await fetchWebHTML(url: config.webBase.appending(path: "/subject/\(subjectID)"))
-      return html.map(BangumiSubjectWebParser.parseEpisodes) ?? []
+      let html = try await fetchWebHTML(url: config.webBase.appending(path: "/subject/\(subjectID)"))
+      return BangumiSubjectWebParser.parseEpisodes(html: html)
     }
   }
 
@@ -300,7 +320,6 @@ final class BangumiAPIClient {
     var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
     var queryItems = query
     queryItems.append(URLQueryItem(name: "app_id", value: config.appID))
-    queryItems.append(URLQueryItem(name: "state", value: String(Int(Date().timeIntervalSince1970))))
     components?.queryItems = queryItems
 
     guard let finalURL = components?.url else {
@@ -456,10 +475,28 @@ final class BangumiAPIClient {
   private func formData(_ values: [String: String]) -> Data {
     let body = values
       .compactMap { key, value -> String? in
-        let encodedValue = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? value
-        return "\(key)=\(encodedValue)"
+        guard
+          let encodedKey = formURLEncoded(key),
+          let encodedValue = formURLEncoded(value)
+        else {
+          return nil
+        }
+        return "\(encodedKey)=\(encodedValue)"
       }
       .joined(separator: "&")
     return Data(body.utf8)
+  }
+
+  private func oauthState() -> String {
+    UUID().uuidString
+  }
+
+  private func formURLEncoded(_ value: String) -> String? {
+    var allowed = CharacterSet.alphanumerics
+    allowed.insert(charactersIn: "-._* ")
+
+    return value
+      .addingPercentEncoding(withAllowedCharacters: allowed)?
+      .replacingOccurrences(of: " ", with: "+")
   }
 }
