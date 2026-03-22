@@ -46,7 +46,7 @@ enum BangumiTypography {
 
 enum BangumiDiscoveryDesign {
   static let screenSpacing: CGFloat = 22
-  static let cardSpacing: CGFloat = 14
+  static let cardSpacing: CGFloat = 16
   static let heroPageInset: CGFloat = BangumiDesign.screenHorizontalPadding
   static let heroHeight: CGFloat = 510
   static let heroRadius: CGFloat = 32
