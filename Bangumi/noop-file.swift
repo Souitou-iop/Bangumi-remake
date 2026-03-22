@@ -5383,6 +5383,7 @@ private struct LoginScreen: View {
   @State private var manualToken = ""
   @State private var isLoading = false
   @State private var isShowingOAuthWebLogin = false
+  @State private var oauthAuthorization: BangumiOAuthAuthorizationSession?
   @State private var errorMessage: String?
 
   var body: some View {
@@ -5394,6 +5395,7 @@ private struct LoginScreen: View {
 
         Button(isLoading ? "登录中..." : "开始网页登录") {
           errorMessage = nil
+          oauthAuthorization = model.apiClient.beginOAuthAuthorization()
           isShowingOAuthWebLogin = true
         }
         .disabled(isLoading)
@@ -5421,20 +5423,24 @@ private struct LoginScreen: View {
     }
     .navigationTitle("登录")
     .navigationDestination(isPresented: $isShowingOAuthWebLogin) {
-      OAuthLoginScreen(
-        authorizeURL: model.apiClient.makeAuthorizeURL(),
-        callbackURL: model.apiClient.config.callbackURL,
-        onCode: { code in
-          isShowingOAuthWebLogin = false
-          Task {
-            await signInWithOAuthCode(code)
+      if let oauthAuthorization {
+        OAuthLoginScreen(
+          authorization: oauthAuthorization,
+          apiClient: model.apiClient,
+          onCode: { code in
+            isShowingOAuthWebLogin = false
+            self.oauthAuthorization = nil
+            Task {
+              await signInWithOAuthCode(code)
+            }
+          },
+          onFailure: { message in
+            isShowingOAuthWebLogin = false
+            self.oauthAuthorization = nil
+            errorMessage = message
           }
-        },
-        onFailure: { message in
-          isShowingOAuthWebLogin = false
-          errorMessage = message
-        }
-      )
+        )
+      }
     }
     .toolbar {
       ToolbarItem(placement: .topBarLeading) {
@@ -5475,12 +5481,10 @@ private struct LoginScreen: View {
 }
 
 private struct OAuthLoginScreen: View {
-  let authorizeURL: URL
-  let callbackURL: URL
+  let authorization: BangumiOAuthAuthorizationSession
+  let apiClient: BangumiAPIClient
   let onCode: @MainActor (String) -> Void
   let onFailure: @MainActor (String) -> Void
-
-  @Environment(\.dismiss) private var dismiss
 
   var body: some View {
     VStack(spacing: 0) {
@@ -5491,8 +5495,8 @@ private struct OAuthLoginScreen: View {
         .padding()
 
       BangumiOAuthWebView(
-        authorizeURL: authorizeURL,
-        callbackURL: callbackURL,
+        authorization: authorization,
+        apiClient: apiClient,
         onCode: onCode,
         onFailure: onFailure
       )
@@ -5502,7 +5506,8 @@ private struct OAuthLoginScreen: View {
     .toolbar {
       ToolbarItem(placement: .topBarLeading) {
         Button("取消") {
-          dismiss()
+          apiClient.cancelOAuthAuthorization()
+          onFailure(BangumiError.oauthCancelled.localizedDescription)
         }
       }
     }
@@ -5581,8 +5586,8 @@ private struct BangumiWebView: UIViewRepresentable {
 }
 
 private struct BangumiOAuthWebView: UIViewRepresentable {
-  let authorizeURL: URL
-  let callbackURL: URL
+  let authorization: BangumiOAuthAuthorizationSession
+  let apiClient: BangumiAPIClient
   let onCode: @MainActor (String) -> Void
   let onFailure: @MainActor (String) -> Void
 
@@ -5598,13 +5603,13 @@ private struct BangumiOAuthWebView: UIViewRepresentable {
     let webView = WKWebView(frame: .zero, configuration: configuration)
     webView.navigationDelegate = context.coordinator
     webView.scrollView.contentInsetAdjustmentBehavior = .never
-    webView.load(URLRequest(url: authorizeURL))
+    webView.load(URLRequest(url: authorization.authorizeURL))
     return webView
   }
 
   func updateUIView(_ webView: WKWebView, context: Context) {
     if webView.url == nil {
-      webView.load(URLRequest(url: authorizeURL))
+      webView.load(URLRequest(url: authorization.authorizeURL))
     }
   }
 
@@ -5656,14 +5661,14 @@ private struct BangumiOAuthWebView: UIViewRepresentable {
     }
 
     private func isOAuthCallback(_ url: URL) -> Bool {
-      url.host?.lowercased() == parent.callbackURL.host?.lowercased()
-        && url.path == parent.callbackURL.path
+      url.host?.lowercased() == parent.authorization.callbackURL.host?.lowercased()
+        && url.path == parent.authorization.callbackURL.path
     }
 
     private func shouldRecoverAuthorizeURL(_ url: URL) -> Bool {
       guard !hasRecoveredAuthorizeURL else { return false }
-      guard url.host?.lowercased() == parent.authorizeURL.host?.lowercased() else { return false }
-      guard url.path == parent.authorizeURL.path else { return false }
+      guard url.host?.lowercased() == parent.authorization.authorizeURL.host?.lowercased() else { return false }
+      guard url.path == parent.authorization.authorizeURL.path else { return false }
 
       let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
       let hasRedirectURI = components?.queryItems?.contains(where: { $0.name == "redirect_uri" }) ?? false
@@ -5673,28 +5678,34 @@ private struct BangumiOAuthWebView: UIViewRepresentable {
     private func recoverAuthorizeURL(in webView: WKWebView) {
       guard !hasRecoveredAuthorizeURL else { return }
       hasRecoveredAuthorizeURL = true
-      webView.load(URLRequest(url: parent.authorizeURL))
+      webView.load(URLRequest(url: parent.authorization.authorizeURL))
     }
 
     private func handleOAuthCallback(_ url: URL) {
       guard !hasHandledCallback else { return }
-      hasHandledCallback = true
 
       let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-      if let code = components?.queryItems?.first(where: { $0.name == "code" })?.value,
-         !code.isEmpty {
+      if let errorMessage = components?.queryItems?.first(where: { $0.name == "error_description" })?.value
+        ?? components?.queryItems?.first(where: { $0.name == "error" })?.value {
+        hasHandledCallback = true
+        parent.apiClient.cancelOAuthAuthorization()
         Task { @MainActor in
-          parent.onCode(code)
+          parent.onFailure(errorMessage)
         }
         return
       }
 
-      let errorMessage = components?.queryItems?.first(where: { $0.name == "error_description" })?.value
-        ?? components?.queryItems?.first(where: { $0.name == "error" })?.value
-        ?? BangumiError.oauthMissingCode.localizedDescription
-
-      Task { @MainActor in
-        parent.onFailure(errorMessage)
+      do {
+        let code = try parent.apiClient.consumeOAuthCallback(url)
+        hasHandledCallback = true
+        Task { @MainActor in
+          parent.onCode(code)
+        }
+      } catch {
+        hasHandledCallback = true
+        Task { @MainActor in
+          parent.onFailure(error.localizedDescription)
+        }
       }
     }
   }

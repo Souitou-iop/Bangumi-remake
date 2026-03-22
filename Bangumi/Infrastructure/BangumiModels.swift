@@ -390,22 +390,36 @@ struct OAuthTokenDTO: Codable {
   }
 }
 
+struct BangumiOAuthAuthorizationSession {
+  let authorizeURL: URL
+  let callbackURL: URL
+  let state: String
+}
+
 struct EmptyResponse: Codable {}
 
-enum BangumiError: LocalizedError {
+enum BangumiError: LocalizedError, Equatable {
   case invalidURL
   case missingToken
+  case missingCurrentUser
   case invalidResponse
   case oauthCancelled
   case oauthMissingCode
+  case oauthStateMissing
+  case oauthStateMismatch
+  case oauthClientSecretMissing
 
   var errorDescription: String? {
     switch self {
     case .invalidURL: "URL 无效"
     case .missingToken: "当前未登录"
+    case .missingCurrentUser: "当前用户信息缺失，请重新登录"
     case .invalidResponse: "服务返回异常"
     case .oauthCancelled: "登录已取消"
     case .oauthMissingCode: "未能从回调中解析授权码"
+    case .oauthStateMissing: "登录回调缺少 state 参数，请重新发起登录"
+    case .oauthStateMismatch: "登录状态已失效或不匹配，请重新发起登录"
+    case .oauthClientSecretMissing: "未配置 OAuth Client Secret，请改用 Token 登录或在应用配置中注入密钥"
     }
   }
 }
