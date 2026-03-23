@@ -21,11 +21,20 @@ struct MeHeaderView: View {
       }
       .scaledToFill()
       .overlay {
+        BangumiRemoteImage(url: backgroundURL) {
+          Color.clear
+        }
+        .scaledToFill()
+        .scaleEffect(1.12)
+        .blur(radius: 30)
+        .opacity(0.78)
+      }
+      .overlay {
         LinearGradient(
           colors: [
-            Color.black.opacity(0.18),
-            Color.black.opacity(0.48),
-            Color.black.opacity(0.68)
+            Color.black.opacity(0.22),
+            Color.black.opacity(0.5),
+            Color.black.opacity(0.72)
           ],
           startPoint: .top,
           endPoint: .bottom
@@ -34,7 +43,7 @@ struct MeHeaderView: View {
       .clipped()
       .overlay {
         Rectangle()
-          .fill(.ultraThinMaterial.opacity(0.12))
+          .fill(.ultraThinMaterial.opacity(0.18))
       }
 
       VStack(spacing: 14) {

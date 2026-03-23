@@ -830,9 +830,9 @@ private struct HomeHeader: View {
           Text("Bangumi")
             .font(.system(size: 30, weight: .black, design: .rounded))
 
-          Text(isAuthenticated ? "把在看、在读、在玩的进度重新排回首页。" : "游客模式下先看看每日放送和推荐条目。")
+          Text(isAuthenticated ? "你的收藏动态、更新进度，都在这里继续。" : "先看看每日放送和推荐条目。")
             .font(.subheadline)
-            .foregroundStyle(Color.white.opacity(0.74))
+            .foregroundStyle(.primary.opacity(0.76))
         }
 
         Spacer(minLength: 12)
@@ -927,7 +927,7 @@ private struct HomeGuestHeroCard: View {
       Text("游客首页")
         .font(.title3.weight(.bold))
 
-      Text("先看每日放送和条目推荐，登录后这里会变成你的进度首页。")
+      Text("先看看每日放送和推荐条目，登录后从这里继续你的收藏动态和更新进度。")
         .font(.subheadline)
         .foregroundStyle(.secondary)
 
