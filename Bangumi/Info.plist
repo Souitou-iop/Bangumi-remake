@@ -4,7 +4,7 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>tv.bangumi.czy0729.subject-updates</string>
+		<string>tv.bangumi.ebato.subject-updates</string>
 	</array>
 	<key>BangumiOAuthClientSecret</key>
 	<string>$(BANGUMI_OAUTH_CLIENT_SECRET)</string>
@@ -34,7 +34,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>bangumi</string>
-				<string>tv.bangumi.czy0729</string>
+				<string>tv.bangumi.ebato</string>
 			</array>
 		</dict>
 	</array>

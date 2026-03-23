@@ -3,7 +3,7 @@ import Security
 import SwiftUI
 
 final class BangumiKeychainStore {
-  private let service = "tv.bangumi.czy0729.native.auth"
+  private let service = "tv.bangumi.ebato.native.auth"
 
   func save(_ data: Data, for key: String) {
     let query: [CFString: Any] = [

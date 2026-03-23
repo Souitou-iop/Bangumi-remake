@@ -26,7 +26,7 @@ private extension UNUserNotificationCenter {
 }
 
 final class BangumiNotificationStore: NSObject, ObservableObject {
-  static let backgroundRefreshIdentifier = "tv.bangumi.czy0729.subject-updates"
+  static let backgroundRefreshIdentifier = "tv.bangumi.ebato.subject-updates"
   static let subjectIDUserInfoKey = "subjectID"
 
   @Published private(set) var permissionState: BangumiNotificationPermissionState = .notDetermined
