@@ -70,15 +70,23 @@ struct MeToolbar: View {
   }
 
   private func toolbarChip(title: String, systemImage: String) -> some View {
-    HStack(spacing: 8) {
-      Image(systemName: systemImage)
+    Label {
       Text(title)
         .lineLimit(1)
+    } icon: {
+      Image(systemName: systemImage)
     }
+    .labelStyle(.titleAndIcon)
     .font(.subheadline.weight(.semibold))
     .foregroundStyle(.primary)
-    .padding(.horizontal, 16)
+    .padding(.horizontal, 14)
     .padding(.vertical, 12)
-    .background(Color(uiColor: .secondarySystemBackground), in: Capsule())
+    .frame(minHeight: 44)
+    .background(Color(uiColor: .systemBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+    .overlay {
+      RoundedRectangle(cornerRadius: 16, style: .continuous)
+        .stroke(Color.primary.opacity(0.06), lineWidth: 1)
+    }
+    .shadow(color: Color.black.opacity(0.04), radius: 10, y: 3)
   }
 }
