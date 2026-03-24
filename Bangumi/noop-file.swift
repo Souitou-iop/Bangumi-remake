@@ -35,48 +35,53 @@ private struct BangumiRootView: View {
         .ignoresSafeArea()
 
       TabView(selection: $model.activeTab) {
-        NavigationStack {
-          HomeScreen()
+        Tab("首页", systemImage: "rectangle.grid.2x2.fill", value: .home) {
+          NavigationStack {
+            HomeScreen()
+          }
         }
-        .tabItem {
-          Label("首页", systemImage: "rectangle.grid.2x2.fill")
-        }
-        .tag(BangumiTab.home)
 
-        NavigationStack {
-          DiscoveryScreen()
+        Tab("发现", systemImage: "sparkles", value: .discovery) {
+          NavigationStack {
+            DiscoveryScreen()
+          }
         }
-        .tabItem {
-          Label("发现", systemImage: "sparkles")
-        }
-        .tag(BangumiTab.discovery)
 
-        NavigationStack {
-          RakuenScreen()
+        Tab("我的", systemImage: "person.circle", value: .me) {
+          NavigationStack {
+            MeScreen()
+          }
         }
-        .tabItem {
-          Label("Rakuen", systemImage: "bubble.left.and.bubble.right")
-        }
-        .tag(BangumiTab.rakuen)
 
-        NavigationStack {
-          MeScreen()
+        Tab(value: .search, role: .search) {
+          NavigationStack {
+            SearchScreen()
+          }
         }
-        .tabItem {
-          Label("我的", systemImage: "person.circle")
+      }
+      .tabBarMinimizeBehavior(.onScrollDown)
+      .tabViewSearchActivation(.searchTabSelection)
+      .searchable(
+        text: $model.searchDraft,
+        isPresented: $model.isShowingSearch,
+        prompt: "动画、书籍、游戏以及更多..."
+      )
+      .searchSuggestions {
+        ForEach(settingsStore.recentSearches.prefix(5), id: \.self) { item in
+          Button(item) {
+            model.searchDraft = item
+            model.requestSearchSubmission()
+          }
+          .searchCompletion(item)
         }
-        .tag(BangumiTab.me)
+      }
+      .onSubmit(of: .search) {
+        model.requestSearchSubmission()
       }
     }
     .preferredColorScheme(settingsStore.preferredTheme.colorScheme)
     .toolbarBackground(.visible, for: .tabBar)
     .toolbarBackground(Color(uiColor: .systemGroupedBackground), for: .tabBar)
-    .sheet(isPresented: $model.isShowingSearch) {
-      NavigationStack {
-        SearchScreen()
-      }
-      .environmentObject(model)
-    }
     .sheet(isPresented: $model.isShowingLogin) {
       NavigationStack {
         LoginScreen()
@@ -111,15 +116,21 @@ private struct BangumiRootView: View {
     .task {
       await notificationStore.prepareForAppLaunch()
     }
-    .onChange(of: scenePhase) { newValue in
+    .onChange(of: scenePhase) { _, newValue in
       Task {
         await notificationStore.handleScenePhase(newValue)
       }
     }
-    .onChange(of: notificationStore.pendingOpenedSubjectID) { subjectID in
+    .onChange(of: notificationStore.pendingOpenedSubjectID) { _, subjectID in
       guard let subjectID else { return }
       model.presentedRoute = .subject(subjectID)
       notificationStore.consumePendingOpenedSubjectID()
+    }
+    .onChange(of: model.activeTab) { _, newValue in
+      model.isShowingSearch = newValue == .search
+      if newValue != .search {
+        model.searchShouldAutoSubmit = false
+      }
     }
   }
 }
@@ -322,11 +333,6 @@ private struct ScreenScaffold<Content: View>: View {
                 model.isShowingNotifications = true
               }
               .labelStyle(.iconOnly)
-
-              Button("搜索", systemImage: "magnifyingglass") {
-                model.isShowingSearch = true
-              }
-              .labelStyle(.iconOnly)
             }
           }
           .toolbarBackground(.visible, for: .navigationBar)
@@ -338,11 +344,6 @@ private struct ScreenScaffold<Content: View>: View {
             ToolbarItemGroup(placement: .topBarTrailing) {
               Button("通知", systemImage: "bell.badge") {
                 model.isShowingNotifications = true
-              }
-              .labelStyle(.iconOnly)
-
-              Button("搜索", systemImage: "magnifyingglass") {
-                model.isShowingSearch = true
               }
               .labelStyle(.iconOnly)
             }
@@ -361,11 +362,6 @@ private struct ScreenScaffold<Content: View>: View {
                 model.isShowingNotifications = true
               }
               .labelStyle(.iconOnly)
-
-              Button("搜索", systemImage: "magnifyingglass") {
-                model.isShowingSearch = true
-              }
-              .labelStyle(.iconOnly)
             }
           }
           .toolbarBackground(.hidden, for: .navigationBar)
@@ -376,11 +372,6 @@ private struct ScreenScaffold<Content: View>: View {
             ToolbarItemGroup(placement: .topBarTrailing) {
               Button("通知", systemImage: "bell.badge") {
                 model.isShowingNotifications = true
-              }
-              .labelStyle(.iconOnly)
-
-              Button("搜索", systemImage: "magnifyingglass") {
-                model.isShowingSearch = true
               }
               .labelStyle(.iconOnly)
             }
@@ -612,11 +603,6 @@ private struct HomeScreen: View {
       ToolbarItemGroup(placement: .topBarTrailing) {
         Button("通知", systemImage: "bell.badge") {
           model.isShowingNotifications = true
-        }
-        .labelStyle(.iconOnly)
-
-        Button("搜索", systemImage: "magnifyingglass") {
-          model.isShowingSearch = true
         }
         .labelStyle(.iconOnly)
       }
@@ -2246,7 +2232,6 @@ private final class DiscoveryViewModel: ObservableObject {
 private struct SearchScreen: View {
   @EnvironmentObject private var model: BangumiAppModel
   @EnvironmentObject private var settingsStore: BangumiSettingsStore
-  @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel = SearchViewModel()
 
   var body: some View {
@@ -2272,14 +2257,14 @@ private struct SearchScreen: View {
         )
 
         Button("查询", action: submitSearch)
-          .disabled(viewModel.keyword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+          .disabled(model.searchDraft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
       }
 
       if !settingsStore.recentSearches.isEmpty {
         Section("最近搜索") {
           ForEach(settingsStore.recentSearches, id: \.self) { item in
             Button(item) {
-              viewModel.keyword = item
+              model.searchDraft = item
               submitSearch()
             }
             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -2354,32 +2339,18 @@ private struct SearchScreen: View {
     .listStyle(.insetGrouped)
     .navigationTitle("搜索")
     .navigationBarTitleDisplayMode(.inline)
-    .searchable(
-      text: $viewModel.keyword,
-      placement: .navigationBarDrawer(displayMode: .always),
-      prompt: "输入关键字"
-    )
-    .onSubmit(of: .search, submitSearch)
     .toolbar {
-      ToolbarItem(placement: .topBarLeading) {
-        Button {
-          dismiss()
-        } label: {
-          Image(systemName: "chevron.backward")
-        }
-      }
-
       ToolbarItem(placement: .topBarTrailing) {
         Menu {
-          if let latest = settingsStore.recentSearches.first, viewModel.keyword.isEmpty {
+          if let latest = settingsStore.recentSearches.first, model.searchDraft.isEmpty {
             Button("恢复最近一次输入") {
-              viewModel.keyword = latest
+              model.searchDraft = latest
             }
           }
 
-          if !viewModel.keyword.isEmpty {
+          if !model.searchDraft.isEmpty {
             Button("清空输入") {
-              viewModel.clearKeyword()
+              clearSearchQuery()
             }
           }
 
@@ -2393,25 +2364,47 @@ private struct SearchScreen: View {
         }
       }
     }
-    .searchSuggestions {
-      ForEach(settingsStore.recentSearches.prefix(5), id: \.self) { item in
-        Button(item) {
-          viewModel.keyword = item
-          submitSearch()
-        }
-        .searchCompletion(item)
-      }
+    .task {
+      syncSearchDraft()
     }
-    .onChange(of: viewModel.matchMode) { _ in
+    .task(id: model.searchShouldAutoSubmit) {
+      guard model.searchShouldAutoSubmit else { return }
+      submitSearch()
+      model.searchShouldAutoSubmit = false
+    }
+    .onChange(of: model.searchDraft) { _, newValue in
+      viewModel.keyword = newValue
+      viewModel.resetResultsIfNeeded()
+    }
+    .onChange(of: model.searchSubmissionSequence) { _, _ in
+      submitSearch()
+    }
+    .onChange(of: viewModel.matchMode) { _, _ in
       guard viewModel.hasSearched else { return }
       submitSearch()
     }
   }
 
   private func submitSearch() {
+    syncSearchDraft()
+    let trimmed = model.searchDraft.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmed.isEmpty else {
+      viewModel.resetResultsIfNeeded()
+      return
+    }
     Task {
       await viewModel.search(using: model.searchRepository, settings: settingsStore)
     }
+  }
+
+  private func syncSearchDraft() {
+    viewModel.keyword = model.searchDraft
+  }
+
+  private func clearSearchQuery() {
+    model.searchDraft = ""
+    viewModel.clearKeyword()
+    viewModel.resetResultsIfNeeded()
   }
 }
 

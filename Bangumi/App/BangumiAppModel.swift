@@ -4,6 +4,9 @@ import SwiftUI
 final class BangumiAppModel: ObservableObject {
   @Published var activeTab: BangumiTab = .home
   @Published var isShowingSearch = false
+  @Published var searchDraft = ""
+  @Published var searchShouldAutoSubmit = false
+  @Published var searchSubmissionSequence = 0
   @Published var isShowingLogin = false
   @Published var isShowingNotifications = false
   @Published var presentedRoute: BangumiModalRoute?
@@ -77,5 +80,21 @@ final class BangumiAppModel: ObservableObject {
 
   func presentImage(_ url: URL) {
     presentedImage = BangumiImagePreview(url: url)
+  }
+
+  func presentSearch(keyword: String = "", autoSubmit: Bool = false) {
+    searchDraft = keyword
+    searchShouldAutoSubmit = autoSubmit
+    activeTab = .search
+    isShowingSearch = true
+  }
+
+  func clearSearchPresentation() {
+    isShowingSearch = false
+    searchShouldAutoSubmit = false
+  }
+
+  func requestSearchSubmission() {
+    searchSubmissionSequence += 1
   }
 }

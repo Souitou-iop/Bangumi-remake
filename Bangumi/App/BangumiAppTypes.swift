@@ -4,8 +4,8 @@ import SwiftUI
 enum BangumiTab: Hashable {
   case home
   case discovery
-  case rakuen
   case me
+  case search
 }
 
 enum HomeCategory: String, CaseIterable, Identifiable {
